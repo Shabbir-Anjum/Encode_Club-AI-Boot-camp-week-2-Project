@@ -96,7 +96,7 @@ export default function JokeGenerator() {
 
           {messages.length > 0 && messages[messages.length - 1].role === 'assistant' && (
             <div className="mt-6 p-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg shadow-lg border border-purple-200">
-              <h3 className="text-xl font-semibold mb-3 text-gray-800">Here's your joke:</h3>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">Here&apos;s your joke::</h3>
               <p className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed">
                 {messages[messages.length - 1].content}
               </p>
