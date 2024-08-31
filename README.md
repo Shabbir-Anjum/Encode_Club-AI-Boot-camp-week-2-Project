@@ -2,7 +2,7 @@
 
 [Live Demo](https://joke-generator-encode-club.vercel.app/)
 
-![Project logo](public/Joke app.png)
+![Project logo](public/Jokeapp.png)
 
 ## Project Description
 
