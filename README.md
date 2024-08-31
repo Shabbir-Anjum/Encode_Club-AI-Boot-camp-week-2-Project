@@ -2,6 +2,8 @@
 
 [Live Demo](https://joke-generator-encode-club.vercel.app/)
 
+![Project logo](public/Joke app.png)
+
 ## Project Description
 
 The AI Joke Generator is an interactive web application that allows users to generate customized jokes using artificial intelligence. Built with NextJS, this project demonstrates the integration of AI models for creative content generation and provides a fun, user-friendly interface for joke enthusiasts.
@@ -29,15 +31,15 @@ The AI Joke Generator is an interactive web application that allows users to gen
 ### Work-related Witty Pun (Temperature: 0.5)
 
 **Here's your joke:**
-```
+
 Why don't we ever hear about lazy workers at the Kelvin factory? Because everything there is kept at a steady 0.5 degrees, and those idle hands just can't handle the coolness!
-```
+
 ### Animal-themed Silly Knock-Knock Joke (Temperature: 0.2)
 
 **Here's your joke:**
-```
+
 Knock, knock! Who's there? Freezing zebra! Freezing zebra wh- Brrr! Just kidding, no need to open the door, I'm already striped down to my shorts!
-```
+
 ## Local Development
 
 To run this project locally, follow these steps:
