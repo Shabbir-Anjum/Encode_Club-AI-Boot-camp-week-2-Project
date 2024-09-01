@@ -26,6 +26,7 @@ export default function JokeGenerator() {
   const [tone, setTone] = useState("witty");
   const [type, setType] = useState("pun");
   const [temperature, setTemperature] = useState(0.5);
+  const [promptVersion, setPromptVersion] = useState("standard");
 
   const topicOptions = [
     "work",
@@ -58,10 +59,44 @@ export default function JokeGenerator() {
     "story",
     "limerick",
   ];
+  const promptOptions = [
+    {
+      value: "standard",
+      label: "Standard",
+      template: "Generate a {type} joke about {topic} with a {tone} tone.",
+    },
+    {
+      value: "detailed",
+      label: "Detailed",
+      template:
+        "Create a {type} joke on the subject of {topic}. The joke should have a {tone} tone and be suitable for a general audience.",
+    },
+    {
+      value: "creative",
+      label: "Creative",
+      template:
+        "Imagine you're a comedian specializing in {type} jokes. Craft a {tone} joke about {topic} that would be the highlight of your stand-up routine.",
+    },
+    {
+      value: "short",
+      label: "Short",
+      template: "Quick {type} joke: {topic}, {tone} style. Go!",
+    },
+    {
+      value: "expert",
+      label: "Expert",
+      template:
+        "As a comedy writer with 20 years of experience, create a {type} joke about {topic} that exemplifies the {tone} style of humor.",
+    },
+  ];
 
   const generateJoke = async () => {
     setMessages([]); // Clear previous messages
-    const prompt = `Generate a ${type} joke about ${topic} with a ${tone} tone.`;
+    const selectedPrompt = promptOptions.find((p) => p.value === promptVersion);
+    const prompt = selectedPrompt.template
+      .replace("{type}", type)
+      .replace("{topic}", topic)
+      .replace("{tone}", tone);
     append({
       role: "user",
       content: prompt,
@@ -73,6 +108,9 @@ export default function JokeGenerator() {
     setTopic(topicOptions[Math.floor(Math.random() * topicOptions.length)]);
     setTone(toneOptions[Math.floor(Math.random() * toneOptions.length)]);
     setType(typeOptions[Math.floor(Math.random() * typeOptions.length)]);
+    setPromptVersion(
+      promptOptions[Math.floor(Math.random() * promptOptions.length)].value,
+    );
     setTemperature(Math.round(Math.random() * 20) / 10); // Random value between 0 and 2, rounded to 1 decimal place
   };
 
@@ -133,6 +171,24 @@ export default function JokeGenerator() {
                 {typeOptions.map((option) => (
                   <SelectItem key={option} value={option}>
                     {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="promptVersion" className="text-lg font-semibold">
+              Prompt Style
+            </Label>
+            <Select value={promptVersion} onValueChange={setPromptVersion}>
+              <SelectTrigger id="promptVersion" className="w-full mt-1">
+                <SelectValue placeholder="Select a prompt style" />
+              </SelectTrigger>
+              <SelectContent className="bg-white text-black">
+                {promptOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
                   </SelectItem>
                 ))}
               </SelectContent>
