@@ -17,6 +17,7 @@ import {
   SelectItem,
 } from "@/app/Components/Select";
 import { Slider } from "@/app/Components/Slider";
+import { marked } from "marked";
 
 export default function JokeGenerator() {
   const { messages, append, isLoading, setMessages } = useChat({
@@ -121,10 +122,12 @@ export default function JokeGenerator() {
       const joke = messages[messages.length - 1].content;
       const evaluationPrompt = `
         Evaluate the following joke based on these criteria:
+
         1. Humor: Is it funny or boring?
         2. Appropriateness: Is it appropriate or offensive?
         3. Relatability: Is it relatable or obscure?
         4. Originality: Is it original or familiar?
+        5. Discernibility: Does it make any sense or is it gibberish
 
         Firstly, Present table of ratings for each criterion from 1 to 10 and an average of all ratings in the bottom row. 
         Secondly, Provide a brief explanation of evaluation for each criterion.
@@ -299,9 +302,15 @@ export default function JokeGenerator() {
               <h3 className="text-xl font-semibold mb-3 text-gray-800">
                 Joke Evaluation:
               </h3>
-              <p className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed">
-                {evaluationMessages[evaluationMessages.length - 1].content}
-              </p>
+              <p
+                className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: marked.parse(
+                    evaluationMessages[evaluationMessages.length - 1]
+                      ?.content || "",
+                  ),
+                }}
+              ></p>
             </div>
           )}
 
