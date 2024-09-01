@@ -27,6 +27,38 @@ export default function JokeGenerator() {
   const [type, setType] = useState("pun");
   const [temperature, setTemperature] = useState(0.5);
 
+  const topicOptions = [
+    "work",
+    "people",
+    "animals",
+    "food",
+    "television",
+    "science fiction",
+    "spouses",
+    "the military",
+    "money",
+  ];
+  const toneOptions = [
+    "child like",
+    "absurd",
+    "witty",
+    "satire",
+    "sarcastic",
+    "silly",
+    "dark",
+    "goofy",
+  ];
+  const typeOptions = [
+    "pun",
+    "why did the chicken cross the road",
+    "walk into a bar",
+    "dad",
+    "yo mama",
+    "knock-knock",
+    "story",
+    "limerick",
+  ];
+
   const generateJoke = async () => {
     setMessages([]); // Clear previous messages
     const prompt = `Generate a ${type} joke about ${topic} with a ${tone} tone.`;
@@ -35,6 +67,13 @@ export default function JokeGenerator() {
       content: prompt,
       data: { temperature },
     });
+  };
+
+  const randomizeSelections = () => {
+    setTopic(topicOptions[Math.floor(Math.random() * topicOptions.length)]);
+    setTone(toneOptions[Math.floor(Math.random() * toneOptions.length)]);
+    setType(typeOptions[Math.floor(Math.random() * typeOptions.length)]);
+    setTemperature(Math.round(Math.random() * 20) / 10); // Random value between 0 and 2, rounded to 1 decimal place
   };
 
   return (
@@ -55,15 +94,11 @@ export default function JokeGenerator() {
                 <SelectValue placeholder="Select a topic" />
               </SelectTrigger>
               <SelectContent className="bg-white text-black">
-                <SelectItem value="work">Work</SelectItem>
-                <SelectItem value="people">People</SelectItem>
-                <SelectItem value="animals">Animals</SelectItem>
-                <SelectItem value="food">Food</SelectItem>
-                <SelectItem value="television">Television</SelectItem>
-                <SelectItem value="science fiction">Sci Fi</SelectItem>
-                <SelectItem value="spouses">Spouses</SelectItem>
-                <SelectItem value="the military">Military</SelectItem>
-                <SelectItem value="money">Money</SelectItem>
+                {topicOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -77,14 +112,11 @@ export default function JokeGenerator() {
                 <SelectValue placeholder="Select a tone" />
               </SelectTrigger>
               <SelectContent className="bg-white text-black">
-                <SelectItem value="child like">Child Like</SelectItem>
-                <SelectItem value="absurd">Absurd</SelectItem>
-                <SelectItem value="witty">Witty</SelectItem>
-                <SelectItem value="satire">Satirical</SelectItem>
-                <SelectItem value="sarcastic">Sarcastic</SelectItem>
-                <SelectItem value="silly">Silly</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="goofy">Goofy</SelectItem>
+                {toneOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -98,16 +130,11 @@ export default function JokeGenerator() {
                 <SelectValue placeholder="Select a type" />
               </SelectTrigger>
               <SelectContent className="bg-white text-black">
-                <SelectItem value="pun">Pun</SelectItem>
-                <SelectItem value="why did the chicken cross the road">
-                  Why did the chicken cross the road
-                </SelectItem>
-                <SelectItem value="walk into a bar">Walk into a bar</SelectItem>
-                <SelectItem value="dad">Dad</SelectItem>
-                <SelectItem value="yo mama">Yo mama</SelectItem>
-                <SelectItem value="knock-knock">Knock-knock</SelectItem>
-                <SelectItem value="story">Story</SelectItem>
-                <SelectItem value="limerick">Limerick</SelectItem>
+                {typeOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -127,19 +154,27 @@ export default function JokeGenerator() {
             />
           </div>
 
-          <Button
-            onClick={generateJoke}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
-            disabled={isLoading}
-          >
-            {isLoading ? "Generating..." : "Generate Joke"}
-          </Button>
+          <div className="flex space-x-2">
+            <Button
+              onClick={generateJoke}
+              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+              disabled={isLoading}
+            >
+              {isLoading ? "Generating..." : "Generate Joke"}
+            </Button>
+            <Button
+              onClick={randomizeSelections}
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Randomize
+            </Button>
+          </div>
 
           {messages.length > 0 &&
             messages[messages.length - 1].role === "assistant" && (
               <div className="mt-6 p-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg shadow-lg border border-purple-200">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  Here&apos;s your joke::
+                  Here&apos;s your joke:
                 </h3>
                 <p className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed">
                   {messages[messages.length - 1].content}
