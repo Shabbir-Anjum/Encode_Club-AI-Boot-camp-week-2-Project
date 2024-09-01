@@ -12,12 +12,18 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+  const temperature = messages[messages.length - 1].data.temperature;
+  for (const message of messages) {
+    delete message.data;
+    delete message.id;
+  }
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await client.chat.completions.create({
     //model: "gpt-4o-mini",
-    model:"mixtral-8x7b-32768",
+    model: "mixtral-8x7b-32768",
     stream: true,
+    temperature: temperature,
     messages,
   });
 
