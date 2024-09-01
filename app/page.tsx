@@ -22,11 +22,17 @@ export default function JokeGenerator() {
   const { messages, append, isLoading, setMessages } = useChat({
     sendExtraMessageFields: true,
   });
+  const {
+    messages: evaluationMessages,
+    append: appendEvaluation,
+    isLoading: isEvaluating,
+  } = useChat();
   const [topic, setTopic] = useState("work");
   const [tone, setTone] = useState("witty");
   const [type, setType] = useState("pun");
   const [temperature, setTemperature] = useState(0.5);
   const [promptVersion, setPromptVersion] = useState("standard");
+  const [evaluation, setEvaluation] = useState("");
 
   const topicOptions = [
     "work",
@@ -92,16 +98,49 @@ export default function JokeGenerator() {
 
   const generateJoke = async () => {
     setMessages([]); // Clear previous messages
+    setEvaluation(""); // Clear previous evaluation
     const selectedPrompt = promptOptions.find((p) => p.value === promptVersion);
     const prompt = selectedPrompt.template
       .replace("{type}", type)
       .replace("{topic}", topic)
       .replace("{tone}", tone);
-    append({
+    messages.length = 0;
+    evaluationMessages.length = 0;
+    await append({
       role: "user",
       content: prompt,
       data: { temperature },
     });
+  };
+
+  const evaluateJoke = async () => {
+    if (
+      messages.length > 0 &&
+      messages[messages.length - 1].role === "assistant"
+    ) {
+      const joke = messages[messages.length - 1].content;
+      const evaluationPrompt = `
+        Evaluate the following joke based on these criteria:
+        1. Humor: Is it funny or boring?
+        2. Appropriateness: Is it appropriate or offensive?
+        3. Relatability: Is it relatable or obscure?
+        4. Originality: Is it original or familiar?
+
+        Firstly, Present table of ratings for each criterion from 1 to 10 and an average of all ratings in the bottom row. 
+        Secondly, Provide a brief explanation of evaluation for each criterion.
+        In the end, Briefly summarize your evaluation.
+
+        Use markdown to format the text.
+
+        Joke to evaluate:
+        "${joke}"
+      `;
+      evaluationMessages.length = 0;
+      await appendEvaluation({
+        role: "user",
+        content: evaluationPrompt,
+      });
+    }
   };
 
   const randomizeSelections = () => {
@@ -113,6 +152,15 @@ export default function JokeGenerator() {
     );
     setTemperature(Math.round(Math.random() * 20) / 10); // Random value between 0 and 2, rounded to 1 decimal place
   };
+
+  React.useEffect(() => {
+    if (
+      evaluationMessages.length > 0 &&
+      evaluationMessages[evaluationMessages.length - 1].role === "assistant"
+    ) {
+      setEvaluation(evaluationMessages[evaluationMessages.length - 1].content);
+    }
+  }, [evaluationMessages]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
@@ -235,10 +283,29 @@ export default function JokeGenerator() {
                 <p className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed">
                   {messages[messages.length - 1].content}
                 </p>
+                <Button
+                  onClick={evaluateJoke}
+                  className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                  disabled={isEvaluating}
+                  hidden={isEvaluating}
+                >
+                  {isEvaluating ? "Evaluating..." : "Evaluate Joke"}
+                </Button>
               </div>
             )}
 
-          {isLoading && (
+          {evaluation && (
+            <div className="mt-6 p-6 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg shadow-lg border border-green-200">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
+                Joke Evaluation:
+              </h3>
+              <p className="text-gray-700 whitespace-pre-wrap text-lg leading-relaxed">
+                {evaluationMessages[evaluationMessages.length - 1].content}
+              </p>
+            </div>
+          )}
+
+          {(isLoading || isEvaluating) && (
             <div className="flex justify-center items-center space-x-2 mt-4">
               <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
               <div

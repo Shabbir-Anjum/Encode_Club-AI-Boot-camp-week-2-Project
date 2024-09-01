@@ -12,7 +12,7 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
-  const temperature = messages[messages.length - 1].data.temperature;
+  const temperature = messages[messages.length - 1].data?.temperature;
   for (const message of messages) {
     delete message.data;
     delete message.id;

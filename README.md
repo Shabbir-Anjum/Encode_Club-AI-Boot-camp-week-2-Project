@@ -22,6 +22,7 @@ The AI Joke Generator is an interactive web application that allows users to gen
    - Topic (e.g., work, animals, food)
    - Tone (e.g., witty, sarcastic, silly)
    - Type of joke (e.g., pun, knock-knock, story)
+   - Prompt style (e.g. standard, detailed, creative, short, expert)
    - Temperature (controls the creativity/randomness of the AI)
 3. Click the "Generate Joke" button.
 4. Enjoy your personalized AI-generated joke!
@@ -45,21 +46,25 @@ Knock, knock! Who's there? Freezing zebra! Freezing zebra wh- Brrr! Just kidding
 To run this project locally, follow these steps:
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/yourusername/ai-joke-generator.git
    ```
 
 2. Navigate to the project directory:
+
    ```
    cd ai-joke-generator
    ```
 
 3. Install dependencies:
+
    ```
    npm install
    ```
 
 4. Set up environment variables:
+
    - Create a `.env.local` file in the root directory
    - Add your AI API key:
      ```
@@ -67,6 +72,7 @@ To run this project locally, follow these steps:
      ```
 
 5. Run the development server:
+
    ```
    npm run dev
    ```
