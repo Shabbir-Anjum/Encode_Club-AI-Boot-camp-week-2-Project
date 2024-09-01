@@ -54,12 +54,16 @@ export default function JokeGenerator() {
               <SelectTrigger id="topic" className="w-full mt-1">
                 <SelectValue placeholder="Select a topic" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-black">
                 <SelectItem value="work">Work</SelectItem>
                 <SelectItem value="people">People</SelectItem>
                 <SelectItem value="animals">Animals</SelectItem>
                 <SelectItem value="food">Food</SelectItem>
                 <SelectItem value="television">Television</SelectItem>
+                <SelectItem value="science fiction">Sci Fi</SelectItem>
+                <SelectItem value="spouses">Spouses</SelectItem>
+                <SelectItem value="the military">Military</SelectItem>
+                <SelectItem value="money">Money</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -72,8 +76,11 @@ export default function JokeGenerator() {
               <SelectTrigger id="tone" className="w-full mt-1">
                 <SelectValue placeholder="Select a tone" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-black">
+                <SelectItem value="child like">Child Like</SelectItem>
+                <SelectItem value="absurd">Absurd</SelectItem>
                 <SelectItem value="witty">Witty</SelectItem>
+                <SelectItem value="satire">Satirical</SelectItem>
                 <SelectItem value="sarcastic">Sarcastic</SelectItem>
                 <SelectItem value="silly">Silly</SelectItem>
                 <SelectItem value="dark">Dark</SelectItem>
@@ -90,10 +97,17 @@ export default function JokeGenerator() {
               <SelectTrigger id="type" className="w-full mt-1">
                 <SelectValue placeholder="Select a type" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-black">
                 <SelectItem value="pun">Pun</SelectItem>
+                <SelectItem value="why did the chicken cross the road">
+                  Why did the chicken cross the road
+                </SelectItem>
+                <SelectItem value="walk into a bar">Walk into a bar</SelectItem>
+                <SelectItem value="dad">Dad</SelectItem>
+                <SelectItem value="yo mama">Yo mama</SelectItem>
                 <SelectItem value="knock-knock">Knock-knock</SelectItem>
                 <SelectItem value="story">Story</SelectItem>
+                <SelectItem value="limerick">Limerick</SelectItem>
               </SelectContent>
             </Select>
           </div>
