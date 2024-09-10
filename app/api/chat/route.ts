@@ -7,6 +7,7 @@ const client = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
+
 // IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
